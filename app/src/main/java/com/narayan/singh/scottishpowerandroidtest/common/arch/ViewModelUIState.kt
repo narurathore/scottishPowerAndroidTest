@@ -1,0 +1,3 @@
+package com.narayan.singh.scottishpowerandroidtest.common.arch
+
+interface ViewModelUIState
