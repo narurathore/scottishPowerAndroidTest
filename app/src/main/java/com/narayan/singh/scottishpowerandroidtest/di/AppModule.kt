@@ -1,6 +1,10 @@
 package com.narayan.singh.scottishpowerandroidtest.di
 
+import com.narayan.singh.scottishpowerandroidtest.data.network.CommentApi
+import com.narayan.singh.scottishpowerandroidtest.data.repository.CommentRepositoryImpl
 import com.narayan.singh.scottishpowerandroidtest.data.utils.ApiConstants
+import com.narayan.singh.scottishpowerandroidtest.domain.repository.CommentRepository
+import com.narayan.singh.scottishpowerandroidtest.domain.usecase.GetCommentsUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,5 +24,23 @@ object AppModule {
             .baseUrl(ApiConstants.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideCommentApi(retrofit: Retrofit): CommentApi {
+        return retrofit.create(CommentApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCommentRepository(api: CommentApi): CommentRepository {
+        return CommentRepositoryImpl(api)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetCommentsUseCase(repository: CommentRepository): GetCommentsUseCase {
+        return GetCommentsUseCase(repository)
     }
 }
