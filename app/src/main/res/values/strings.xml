@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">scottishPowerAndroidTest</string>
+
+    <!-- Comments Screen -->
+    <string name="comments_screen_title">Comments</string>
+    <string name="no_comments_found">No comments found</string>
 </resources>
