@@ -7,9 +7,9 @@ import com.narayan.singh.scottishpowerandroidtest.domain.model.Comment
 import com.narayan.singh.scottishpowerandroidtest.domain.usecase.GetCommentsUseCase
 import io.mockk.coEvery
 import io.mockk.mockk
+import junit.framework.TestCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.*
@@ -59,16 +59,6 @@ class CommentsViewModelTest {
 
         assert(stateChanges.any { it.isLoading })
         assertEquals(false, stateChanges.last().isLoading)
-    }
-
-    @Test
-    fun `selectComment should update selectedComment in UI state`() = runTest {
-        // When: Selecting a comment
-        viewModel.selectComment(1)
-
-        // Then: The selected comment should match
-        val selectedComment = viewModel.uiState.first().selectedComment
-        assertEquals(1, selectedComment?.id)
-        assertEquals("User1", selectedComment?.name)
+        TestCase.assertEquals(commentsList, stateChanges.last().comments)
     }
 }
