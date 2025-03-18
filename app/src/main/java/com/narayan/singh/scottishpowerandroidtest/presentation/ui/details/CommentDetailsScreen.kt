@@ -21,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.narayan.singh.scottishpowerandroidtest.R
@@ -40,7 +41,10 @@ fun CommentDetailsScreen(
             TopAppBar(
                 title = { Text(stringResource(R.string.comment_details_title)) },
                 navigationIcon = {
-                    IconButton(onClick = { onBackClick() }) {
+                    IconButton(
+                        onClick = { onBackClick() },
+                        modifier = Modifier.testTag("backButton")
+                    ) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                     }
                 },
@@ -64,7 +68,7 @@ fun CommentDetailsScreen(
                         modifier = Modifier.fillMaxSize(),
                         contentAlignment = Alignment.Center
                     ) {
-                        CircularProgressIndicator()
+                        CircularProgressIndicator(modifier = Modifier.testTag("loadingIndicator"))
                     }
                 }
 
@@ -73,7 +77,10 @@ fun CommentDetailsScreen(
                         modifier = Modifier.fillMaxSize(),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text(stringResource(R.string.no_comments_found))
+                        Text(
+                            stringResource(R.string.no_comments_found),
+                            modifier = Modifier.testTag("emptyStateMessage")
+                        )
                     }
                 }
 
