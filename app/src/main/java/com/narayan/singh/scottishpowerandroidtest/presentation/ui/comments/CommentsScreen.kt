@@ -11,6 +11,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.narayan.singh.scottishpowerandroidtest.R
@@ -44,7 +45,7 @@ fun CommentsScreen(
             contentAlignment = Alignment.Center
         ) {
             when {
-                uiState.isLoading -> CircularProgressIndicator()
+                uiState.isLoading -> CircularProgressIndicator(modifier = Modifier.testTag("loadingIndicator"))
                 uiState.comments.isEmpty() -> Text(stringResource(R.string.no_comments_found))
                 else -> CommentsList(uiState.comments, onCommentSelected)
             }
