@@ -21,4 +21,8 @@ class CommentRepositoryImpl @Inject constructor(
             commentDao.getAllComments().map { it.toDomainModel() }
         }
     }
+
+    override suspend fun getCommentById(commentId: Int): Comment? {
+        return commentDao.getCommentById(commentId)?.toDomainModel()
+    }
 }

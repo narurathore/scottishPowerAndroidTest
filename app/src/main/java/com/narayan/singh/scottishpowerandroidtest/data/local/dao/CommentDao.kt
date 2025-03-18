@@ -13,6 +13,9 @@ interface CommentDao {
     @Query("SELECT * FROM ${DatabaseConstants.COMMENTS_TABLE_NAME}")
     suspend fun getAllComments(): List<CommentEntity>
 
+    @Query("SELECT * FROM ${DatabaseConstants.COMMENTS_TABLE_NAME} WHERE id = :commentId") // ✅ Fetch single comment
+    suspend fun getCommentById(commentId: Int): CommentEntity?
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertComments(comments: List<CommentEntity>)
 
