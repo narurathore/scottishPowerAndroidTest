@@ -14,7 +14,10 @@ fun NavGraph(navController: NavHostController, viewModel: CommentsViewModel = hi
     val uiState = viewModel.uiState.collectAsState().value
     NavHost(navController = navController, startDestination = Screen.Comments.route) {
         composable(Screen.Comments.route) {
-            CommentsScreen(navController, uiState)
+            CommentsScreen(uiState, onCommentSelected = { comment ->
+                viewModel.selectComment(comment.id)
+                navController.navigate(Screen.CommentDetails.createRoute(comment.id))
+            })
         }
         composable(Screen.CommentDetails.route) {
             // Add your comment details screen composable here

@@ -9,6 +9,7 @@ import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.*
@@ -25,15 +26,15 @@ class CommentsViewModelTest {
     @get:Rule
     val testDispatcherRule = MainDispatcherRule()
 
+    private val commentsList = listOf(
+        Comment(1, 1, "User1", "user1@example.com", "Test comment"),
+        Comment(2, 1, "User2", "user2@example.com", "Another test")
+    )
+
     @Before
     fun setup() {
         // Given: Mock successful API call
-        val commentsList = listOf(
-            Comment(1, 1, "User1", "user1@example.com", "Test comment"),
-            Comment(2, 1, "User2", "user2@example.com", "Another test")
-        )
         coEvery { getCommentsUseCase() } coAnswers {
-            delay(100) // so all states of ui state can be captured
             commentsList
         }
         viewModel = CommentsViewModel(getCommentsUseCase, testDispatcherRule.testDispatcher)
@@ -43,6 +44,10 @@ class CommentsViewModelTest {
     fun `isLoading should be true initially and then false when comments are fetched`() = runTest {
         val stateChanges = mutableListOf<CommentsUIState>()
         val testScope = TestScope()
+        coEvery { getCommentsUseCase() } coAnswers {
+            delay(100)
+            commentsList
+        }
         val job = testScope.launch(testDispatcherRule.testDispatcher) {
             viewModel = CommentsViewModel(getCommentsUseCase, testDispatcherRule.testDispatcher)
             viewModel.uiState.toList(stateChanges)
@@ -54,5 +59,16 @@ class CommentsViewModelTest {
 
         assert(stateChanges.any { it.isLoading })
         assertEquals(false, stateChanges.last().isLoading)
+    }
+
+    @Test
+    fun `selectComment should update selectedComment in UI state`() = runTest {
+        // When: Selecting a comment
+        viewModel.selectComment(1)
+
+        // Then: The selected comment should match
+        val selectedComment = viewModel.uiState.first().selectedComment
+        assertEquals(1, selectedComment?.id)
+        assertEquals("User1", selectedComment?.name)
     }
 }

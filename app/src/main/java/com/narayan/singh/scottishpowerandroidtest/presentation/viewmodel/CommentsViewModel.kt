@@ -33,9 +33,19 @@ class CommentsViewModel @Inject constructor(
             }
         }
     }
+
+    fun selectComment(commentId: Int) {
+        val selected = _uiState.value.comments.find { it.id == commentId }
+        println("🔍 Debug: Found comment with ID: $commentId -> $selected") // ✅ Debugging log
+
+        _uiState.update { currentState ->
+            currentState.copy(selectedComment = selected)
+        }
+    }
 }
 
 data class CommentsUIState(
     val comments: List<Comment> = emptyList(),
-    val isLoading: Boolean = false
+    val isLoading: Boolean = false,
+    val selectedComment: Comment? = null
 ) : ViewModelUIState

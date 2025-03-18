@@ -15,19 +15,16 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.narayan.singh.scottishpowerandroidtest.R
 import com.narayan.singh.scottishpowerandroidtest.common.theme.Dimens
 import com.narayan.singh.scottishpowerandroidtest.common.theme.ScottishPowerAndroidTestTheme
 import com.narayan.singh.scottishpowerandroidtest.domain.model.Comment
-import com.narayan.singh.scottishpowerandroidtest.presentation.navigation.Screen
 import com.narayan.singh.scottishpowerandroidtest.presentation.viewmodel.CommentsUIState
 
 @Composable
 fun CommentsScreen(
-    navController: NavController,
-    uiState: CommentsUIState
+    uiState: CommentsUIState,
+    onCommentSelected: (Comment) -> Unit = {}
 ) {
     Scaffold(
         topBar = {
@@ -51,18 +48,18 @@ fun CommentsScreen(
             when {
                 uiState.isLoading -> CircularProgressIndicator()
                 uiState.comments.isEmpty() -> Text(stringResource(R.string.no_comments_found))
-                else -> CommentsList(uiState.comments, navController)
+                else -> CommentsList(uiState.comments, onCommentSelected)
             }
         }
     }
 }
 
 @Composable
-fun CommentsList(comments: List<Comment>, navController: NavController) {
+fun CommentsList(comments: List<Comment>, onCommentSelected: (Comment) -> Unit = {}) {
     LazyColumn(modifier = Modifier.fillMaxHeight()) {
         items(comments) { comment ->
             CommentItem(comment) {
-                navController.navigate(Screen.CommentDetails.createRoute(comment.id))
+                onCommentSelected(comment)
             }
         }
     }
@@ -88,7 +85,6 @@ fun CommentItem(comment: Comment, onClick: () -> Unit) {
 @Preview(showBackground = true)
 @Composable
 fun PreviewCommentsScreen() {
-    val navController = rememberNavController()
     val sampleUIState = CommentsUIState(
         comments = listOf(
             Comment(1, 1, "User1", "user1@example.com", "Test comment 1"),
@@ -96,20 +92,19 @@ fun PreviewCommentsScreen() {
         )
     )
     ScottishPowerAndroidTestTheme {
-        CommentsScreen(navController, sampleUIState)
+        CommentsScreen(sampleUIState)
     }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun PreviewCommentsList() {
-    val navController = rememberNavController()
     val sampleComments = listOf(
         Comment(1, 1, "User1", "user1@example.com", "Test comment 1"),
         Comment(2, 1, "User2", "user2@example.com", "Test comment 2")
     )
     ScottishPowerAndroidTestTheme {
-        CommentsList(sampleComments, navController)
+        CommentsList(sampleComments)
     }
 }
 
