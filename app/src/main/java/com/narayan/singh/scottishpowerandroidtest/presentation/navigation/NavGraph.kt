@@ -8,21 +8,24 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.narayan.singh.scottishpowerandroidtest.presentation.ui.comments.CommentsScreen
 import com.narayan.singh.scottishpowerandroidtest.presentation.ui.details.CommentDetailsScreen
+import com.narayan.singh.scottishpowerandroidtest.presentation.viewmodel.CommentDetailsViewModel
 import com.narayan.singh.scottishpowerandroidtest.presentation.viewmodel.CommentsViewModel
 
 @Composable
-fun NavGraph(navController: NavHostController, viewModel: CommentsViewModel = hiltViewModel()) {
-    val uiState = viewModel.uiState.collectAsState().value
+fun NavGraph(navController: NavHostController) {
     NavHost(navController = navController, startDestination = Screen.Comments.route) {
         composable(Screen.Comments.route) {
+            val viewModel: CommentsViewModel = hiltViewModel()
+            val uiState = viewModel.uiState.collectAsState().value
             CommentsScreen(uiState, onCommentSelected = { comment ->
-                viewModel.selectComment(comment.id)
                 navController.navigate(Screen.CommentDetails.createRoute(comment.id))
             })
         }
         composable(Screen.CommentDetails.route) {
+            val detailsViewModel: CommentDetailsViewModel = hiltViewModel()
+            val uiState = detailsViewModel.uiState.collectAsState().value
             CommentDetailsScreen(
-                uiState.selectedComment,
+                uiState,
                 onBackClick = { navController.popBackStack() })
         }
     }

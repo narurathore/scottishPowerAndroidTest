@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -27,10 +28,11 @@ import com.narayan.singh.scottishpowerandroidtest.common.theme.Dimens
 import com.narayan.singh.scottishpowerandroidtest.common.theme.ScottishPowerAndroidTestTheme
 import com.narayan.singh.scottishpowerandroidtest.domain.model.Comment
 import com.narayan.singh.scottishpowerandroidtest.presentation.ui.comments.CommentItem
+import com.narayan.singh.scottishpowerandroidtest.presentation.viewmodel.CommentDetailsUIState
 
 @Composable
 fun CommentDetailsScreen(
-    comment: Comment?,
+    uiState: CommentDetailsUIState,
     onBackClick: () -> Unit = {}
 ) {
     Scaffold(
@@ -53,15 +55,31 @@ fun CommentDetailsScreen(
         Box(
             modifier = Modifier
                 .padding(paddingValues)
-                .fillMaxSize().background(MaterialTheme.colorScheme.background),
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.background),
         ) {
-            comment?.let {
-                CommentItem(comment = it, showDetails = true)
-            } ?: Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(stringResource(R.string.no_comments_found))
+            when {
+                uiState.isLoading -> {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator()
+                    }
+                }
+
+                uiState.comment == null -> {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(stringResource(R.string.no_comments_found))
+                    }
+                }
+
+                else -> {
+                    CommentItem(comment = uiState.comment, showDetails = true)
+                }
             }
         }
     }
@@ -70,16 +88,25 @@ fun CommentDetailsScreen(
 @Preview(showBackground = true)
 @Composable
 fun PreviewCommentDetailsScreen() {
-    val sampleComment = Comment(1, 1, "User1", "user1@example.com", "Test comment 1")
+    val sampleUIState = CommentDetailsUIState(
+        comment = Comment(
+            1,
+            1,
+            "User1",
+            "user1@example.com",
+            "Test comment 1"
+        ),
+    )
     ScottishPowerAndroidTestTheme {
-        CommentDetailsScreen(sampleComment)
+        CommentDetailsScreen(sampleUIState)
     }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun PreviewCommentDetailsScreen_NoComment() {
+    val sampleUIState = CommentDetailsUIState()
     ScottishPowerAndroidTestTheme {
-        CommentDetailsScreen(null) // Pass null for missing comment preview
+        CommentDetailsScreen(sampleUIState) // when no comment is available
     }
 }
