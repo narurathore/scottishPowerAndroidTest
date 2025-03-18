@@ -59,10 +59,12 @@ class CommentDetailsScreenTest {
 
         composeTestRule.onNodeWithText("John Doe").assertExists()
         composeTestRule.onNodeWithText("This is a sample comment for testing.").assertExists()
-        composeTestRule.onNodeWithText("ID:").assertExists()
         composeTestRule.onNodeWithText("1").assertExists()
-        composeTestRule.onNodeWithText("Email:").assertExists()
         composeTestRule.onNodeWithText("john.doe@example.com").assertExists()
+        composeTestRule.onNode(hasTestTag("commentIdLabel"), useUnmergedTree = true).assertExists()
+        composeTestRule.onNode(hasTestTag("commentEmailLabel"), useUnmergedTree = true).assertExists()
+        composeTestRule.onAllNodes(hasTestTag("horizontalDivider"), useUnmergedTree = true).assertCountEquals(2)
+
     }
 
     @Test

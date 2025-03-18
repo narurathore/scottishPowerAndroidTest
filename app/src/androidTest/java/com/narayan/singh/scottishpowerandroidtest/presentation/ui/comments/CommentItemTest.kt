@@ -36,7 +36,9 @@ class CommentItemTest {
 
         composeTestRule.onNodeWithText("John Doe").assertExists()
         composeTestRule.onNodeWithText("This is a sample comment for testing.").assertExists()
-        composeTestRule.onNodeWithText("ID:").assertDoesNotExist()
+        composeTestRule.onNode(hasTestTag("commentIdLabel")).assertDoesNotExist()
+        composeTestRule.onNode(hasTestTag("commentEmailLabel")).assertDoesNotExist()
+        composeTestRule.onNode(hasTestTag("horizontalDivider")).assertDoesNotExist()
     }
 
     @Test
@@ -65,10 +67,11 @@ class CommentItemTest {
 
         composeTestRule.onNodeWithText("John Doe").assertExists()
         composeTestRule.onNodeWithText("This is a sample comment for testing.").assertExists()
-        composeTestRule.onNodeWithText("ID:").assertExists()
+        composeTestRule.onNode(hasTestTag("commentIdLabel"), useUnmergedTree = true).assertExists()
         composeTestRule.onNodeWithText("1").assertExists()
-        composeTestRule.onNodeWithText("Email:").assertExists()
+        composeTestRule.onNode(hasTestTag("commentEmailLabel"), useUnmergedTree = true).assertExists()
         composeTestRule.onNodeWithText("john.doe@example.com").assertExists()
+        composeTestRule.onAllNodes(hasTestTag("horizontalDivider"), useUnmergedTree = true).assertCountEquals(2)
     }
 
     @Test

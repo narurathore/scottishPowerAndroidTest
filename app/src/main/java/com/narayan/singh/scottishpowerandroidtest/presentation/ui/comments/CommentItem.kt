@@ -13,6 +13,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.narayan.singh.scottishpowerandroidtest.R
@@ -46,7 +47,9 @@ fun CommentItem(
 
             if (showDetails) {
                 HorizontalDivider(
-                    modifier = Modifier.padding(vertical = Dimens.SmallPadding),
+                    modifier = Modifier
+                        .padding(vertical = Dimens.SmallPadding)
+                        .testTag("horizontalDivider"),
                     thickness = Dimens.DividerThickness
                 )
 
@@ -56,13 +59,16 @@ fun CommentItem(
                 ) {
                     Text(
                         text = stringResource(R.string.comment_id_label),
-                        style = MaterialTheme.typography.bodyMedium
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.testTag("commentIdLabel")
                     )
                     Text(text = comment.id.toString(), style = MaterialTheme.typography.bodyMedium)
                 }
 
                 HorizontalDivider(
-                    modifier = Modifier.padding(vertical = Dimens.SmallPadding),
+                    modifier = Modifier
+                        .padding(vertical = Dimens.SmallPadding)
+                        .testTag("horizontalDivider"),
                     thickness = Dimens.DividerThickness
                 )
 
@@ -72,7 +78,8 @@ fun CommentItem(
                 ) {
                     Text(
                         text = stringResource(R.string.comment_email_label),
-                        style = MaterialTheme.typography.bodyMedium
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.testTag("commentEmailLabel")
                     )
                     Text(text = comment.email, style = MaterialTheme.typography.bodyMedium)
                 }
