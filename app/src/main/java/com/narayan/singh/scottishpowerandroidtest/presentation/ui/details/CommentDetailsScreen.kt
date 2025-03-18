@@ -78,7 +78,7 @@ fun CommentDetailsScreen(
                 }
 
                 else -> {
-                    CommentItem(comment = uiState.comment, showDetails = true)
+                    CommentItem(comment = uiState.comment, showDetails = true, disableClick = true)
                 }
             }
         }

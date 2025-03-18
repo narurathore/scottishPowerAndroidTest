@@ -15,7 +15,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.narayan.singh.scottishpowerandroidtest.R
 import com.narayan.singh.scottishpowerandroidtest.common.theme.Dimens
 import com.narayan.singh.scottishpowerandroidtest.common.theme.ScottishPowerAndroidTestTheme
@@ -25,13 +24,18 @@ import com.narayan.singh.scottishpowerandroidtest.domain.model.Comment
 fun CommentItem(
     comment: Comment,
     showDetails: Boolean = false,
+    disableClick: Boolean = false,
     onClick: () -> Unit = {}
 ) {
+    val cardModifier = if (disableClick) {
+        Modifier
+    } else {
+        Modifier.clickable { onClick() }
+    }
     Card(
-        modifier = Modifier
+        modifier = cardModifier
             .fillMaxWidth()
-            .padding(Dimens.SmallPadding)
-            .clickable { onClick() },
+            .padding(Dimens.SmallPadding),
         elevation = CardDefaults.cardElevation(defaultElevation = Dimens.CardElevation),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
