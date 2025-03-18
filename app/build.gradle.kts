@@ -84,6 +84,12 @@ dependencies {
     // Retrofit
     implementation(libs.retrofit)
     implementation(libs.retrofit.gson)
+
+    // Room Database
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    //noinspection KaptUsageInsteadOfKsp
+    kapt(libs.room.compiler)
 }
 
 hilt {
