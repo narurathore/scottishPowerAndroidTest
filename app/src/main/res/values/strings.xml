@@ -4,4 +4,9 @@
     <!-- Comments Screen -->
     <string name="comments_screen_title">Comments</string>
     <string name="no_comments_found">No comments found</string>
+
+    <!-- Comment Details Screen -->
+    <string name="comment_details_title">Comment Details</string>
+    <string name="comment_id_label">ID:</string>
+    <string name="comment_email_label">Email:</string>
 </resources>

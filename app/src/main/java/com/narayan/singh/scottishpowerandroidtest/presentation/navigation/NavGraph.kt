@@ -7,6 +7,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.narayan.singh.scottishpowerandroidtest.presentation.ui.comments.CommentsScreen
+import com.narayan.singh.scottishpowerandroidtest.presentation.ui.details.CommentDetailsScreen
 import com.narayan.singh.scottishpowerandroidtest.presentation.viewmodel.CommentsViewModel
 
 @Composable
@@ -20,7 +21,9 @@ fun NavGraph(navController: NavHostController, viewModel: CommentsViewModel = hi
             })
         }
         composable(Screen.CommentDetails.route) {
-            // Add your comment details screen composable here
+            CommentDetailsScreen(
+                uiState.selectedComment,
+                onBackClick = { navController.popBackStack() })
         }
     }
 }
