@@ -1,14 +1,20 @@
 package com.narayan.singh.scottishpowerandroidtest.di
 
 import android.annotation.SuppressLint
+import android.content.Context
+import androidx.room.Room
+import com.narayan.singh.scottishpowerandroidtest.data.local.dao.CommentDao
+import com.narayan.singh.scottishpowerandroidtest.data.local.database.AppDatabase
 import com.narayan.singh.scottishpowerandroidtest.data.network.CommentApi
 import com.narayan.singh.scottishpowerandroidtest.data.repository.CommentRepositoryImpl
 import com.narayan.singh.scottishpowerandroidtest.data.utils.ApiConstants
+import com.narayan.singh.scottishpowerandroidtest.data.utils.DatabaseConstants
 import com.narayan.singh.scottishpowerandroidtest.domain.repository.CommentRepository
 import com.narayan.singh.scottishpowerandroidtest.domain.usecase.GetCommentsUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -67,8 +73,27 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideCommentRepository(api: CommentApi): CommentRepository {
-        return CommentRepositoryImpl(api)
+    fun provideDatabase(@ApplicationContext context: Context): AppDatabase {
+        return Room.databaseBuilder(
+            context.applicationContext,
+            AppDatabase::class.java,
+            DatabaseConstants.DATABASE_NAME
+        ).fallbackToDestructiveMigration().build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideCommentDao(db: AppDatabase): CommentDao {
+        return db.commentDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideCommentRepository(
+        api: CommentApi,
+        commentDao: CommentDao
+    ): CommentRepository {
+        return CommentRepositoryImpl(api, commentDao)
     }
 
     @Provides
