@@ -7,7 +7,9 @@ import androidx.activity.enableEdgeToEdge
 import androidx.navigation.compose.rememberNavController
 import com.narayan.singh.scottishpowerandroidtest.presentation.navigation.NavGraph
 import com.narayan.singh.scottishpowerandroidtest.ui.theme.ScottishPowerAndroidTestTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
