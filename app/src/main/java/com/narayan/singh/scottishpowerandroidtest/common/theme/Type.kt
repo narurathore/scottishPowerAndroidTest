@@ -1,4 +1,4 @@
-package com.narayan.singh.scottishpowerandroidtest.ui.theme
+package com.narayan.singh.scottishpowerandroidtest.common.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
