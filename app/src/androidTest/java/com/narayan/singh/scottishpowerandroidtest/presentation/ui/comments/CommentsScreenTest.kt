@@ -44,7 +44,7 @@ class CommentsScreenTest {
             }
         }
 
-        composeTestRule.onNodeWithText("No comments found").assertExists()
+        composeTestRule.onNode(hasTestTag("emptyStateMessage")).assertExists()
     }
 
     @Test

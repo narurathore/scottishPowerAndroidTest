@@ -46,7 +46,11 @@ fun CommentsScreen(
         ) {
             when {
                 uiState.isLoading -> CircularProgressIndicator(modifier = Modifier.testTag("loadingIndicator"))
-                uiState.comments.isEmpty() -> Text(stringResource(R.string.no_comments_found))
+                uiState.comments.isEmpty() -> Text(
+                    stringResource(R.string.no_comments_found),
+                    modifier = Modifier.testTag("emptyStateMessage")
+                )
+
                 else -> CommentsList(uiState.comments, onCommentSelected)
             }
         }
