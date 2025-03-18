@@ -9,4 +9,6 @@ object Dimens {
 
     val CardElevation = 4.dp
     val ToolbarElevation = 8.dp
+
+    val DividerThickness = 0.5.dp
 }
